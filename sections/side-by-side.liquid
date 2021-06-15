@@ -1,0 +1,51 @@
+{% assign img_url = section.settings.image | img_url: 'master' %}
+{% assign img_url2 = section.settings.image2 | img_url: 'master' %}
+
+<div class="side-by-side shopify-section index-section " style="height: 70vh; width: 100%;">
+    <div class="page-width feature-row"  style="height: 70vh;">
+        <div class="feature-row">
+            <div class="feature-row__item">
+                <img src="{{img_url}}" alt="">
+            </div>
+            <div class="feature-row__item">
+                <img src="{{img_url2}}" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "2 Image Banners",
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+        },
+        {
+            "type": "image_picker",
+            "id": "image2",
+            "label": "Image 2"
+        }
+  ],
+  "presets": [
+    {
+      "name": "2 Image Banners",
+      "category": "Banners"
+    }
+  ]
+}
+
+
+  {% endschema %}
+
+  {% stylesheet %}
+
+{% endstylesheet %}
+
+
+{% javascript %}
+
+{% endjavascript %}
+

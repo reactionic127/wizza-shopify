@@ -1,0 +1,200 @@
+<!-- <div class="card-container jarallax">
+      <img src="{{'banner.jpg' | asset_url }}" class="jarallax-img">
+      {% render 'wallet-card' %}
+      <br>
+      <div id="addFunds"></div>
+      <button class="btn btn-primary add-funds">Add Funds</button>
+      <br>
+    </div> -->
+
+<div class="page-width">
+  <div class="section-header text-center" style="margin-top: 55px;">
+    
+    <span class="first-name hide">{{customer.first_name}}</span>
+    <span class="last-name hide">{{customer.last_name}}</span>
+    <span class="customer-id hide">{{ customer.id }}</span>
+    
+    
+  </div>
+
+  <div class="grid myaccount">
+    <div class="grid__item myaccount__order-history">
+    <div id = "wk_wallet" customer_id="{{ customer.id }}" customer_email = "{{ customer.email }}" customer_tag = "{{ customer.tags }}"></div>
+      
+      <h2 class="hide-mobile">Your Entries</h2>
+      
+      
+      
+      
+      {% paginate customer.orders by 500 %}
+        {% if customer.orders.size != 0 %}
+
+          
+
+          <table class="responsive-table">
+            <thead>
+              <tr>
+                <th scope="col">{{ 'customer.orders.order_number' | t }}</th>
+                <th scope="col">Purchased</th>
+                <th scope="col">Tickets ordered</th>
+                <th scope="col">Ends</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in customer.orders %}
+                {% for item in order.line_items %}                  
+                  
+
+                {% endfor %}
+
+                <tr class="item">
+                  <th data-label="{{ 'customer.orders.order_number' | t }}" scope="row">
+                    <a href="{{ order.customer_url }}" class="btn btn--secondary btn--small" aria-label="{{ 'customer.orders.order_number_link' | t: number: order.name }}">
+                    {% for item in order.line_items %}
+                      {{ item.image | img_url: '100x100' | img_tag }}
+                    {% endfor %}<br/>
+                    {{ order.name }}
+                    </a>
+                  </th>
+                  <td data-label="{{ 'customer.orders.date' | t }}">{{ order.created_at | time_tag: format: 'date' }}</td>
+                  <td data-label="{{ 'customer.orders.payment_status' | t }}">
+                    {% for item in order.line_items %}
+                      {% assign tickets = item.variant.title | split: " - " %}
+                      {% for member in tickets %}
+                        {{ member }}
+                      {% endfor %}
+                    {% endfor %}
+                  
+                  </td>
+                  <td>
+                  {% for item in order.line_items %}
+                    <span class="end-time">{{item.product.metafields.arena.end_date}} {{item.product.metafields.arena.end_time}}</span>
+                  {% endfor %}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+        {% else %}
+
+          <p>{{ 'customer.orders.none' | t }}</p>
+
+        {% endif %}
+        {%- if paginate.pages > 1 -%}
+          {% include 'pagination', paginate: paginate %}
+        {%- endif -%}
+      {% endpaginate %}
+    </div>
+    <div class="grid__item myaccount__account-details">
+      <h2>Welcome back, {{customer.first_name}}</h2>
+      <ul>
+        <li><a href="https://af.secomapp.com/wizza/register" target="_blank">Affiliate Portal</a></li>
+        <li>{{ 'layout.customer.log_out' | t | customer_logout_link }}</li>
+      </ul>
+      <br>
+      <br>
+      <h2>Addresses</h2>
+
+      {{ customer.default_address | format_address }}
+
+      <p><a href="{{ routes.account_addresses_url }}" class="btn btn--small">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a></p>
+    
+      <div class="mobile-list">
+      <h2>Your Entries</h2>
+            {% for order in customer.orders %}
+              <p style="font-size: 12px;">{{ order.name }}</p>
+              {% for item in order.line_items %}
+                <a href="{{ order.customer_url }}" aria-label="{{ 'customer.orders.order_number_link' | t: number: order.name }}">{{ item.image | img_url: '100x100' | img_tag }}
+                <h4>{{item.product.title}}</h4></a>
+                {% assign tickets = item.variant.title | split: " - " %}
+                {% for member in tickets %}
+                  <p>{{ member }} Tickets</p>
+                {% endfor %}
+                <span class="end-time">{{item.product.metafields.arena.end_date}} {{item.product.metafields.arena.end_time}}</span>
+              {% endfor %}
+              
+            {% endfor %}
+          </div>
+    </div>
+  </div>
+</div>
+
+<style>
+html body #wk_wallet .wk_bracket, .wk_status_detail, .wk_paid_text, .wk_transactions {
+    display: none !important;
+}
+#addFunds {
+  text-align: center;
+}
+#addFunds .add_money {
+  float: none;
+}
+#addFunds input {
+  text-align: center;
+}
+.wk_amount_transaction {
+  height: auto;
+  width: 100%;
+  float: none;
+}
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: -webkit-flex;
+  -webkit-align-items: center;
+  -webkit-justify-content: center;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+}
+.hide {
+  display: none !important;
+}
+#wk_wallet {
+  display: none !important;
+}
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  jQuery(document).ready(function($){
+    $('.item').each(function(item){
+      var endDate = moment($(this).find('.end-time').text(),"MM-DD-YYYY hh:mm:ss")
+
+      $(this).find('.end-time').text(endDate.from())
+    })
+
+    $('.add-funds').click(function(){
+      if ($(this).hasClass('nevermind')) {
+        $(this).text('Add Funds');
+        $(this).removeClass('nevermind');
+        $('#addFunds').html('');
+      } else {
+        $('#addFunds').html($('.wk_add_amt').html());
+        $(this).addClass('nevermind');
+        $(this).text('Nevermind');
+      }
+      
+    });
+
+    var firstName = $('.first-name').text()
+    var lastName = $('.last-name').text()
+    var id = $('.customer-id').text()
+    
+    $('.card__info.name').text(firstName + ' ' + lastName);
+    $('.num').text(id);
+    
+
+    setInterval(function(){
+      var balance = $('.wk_paid_amount').text();
+
+      if (balance) {
+        $('.balance').text(balance);
+      }
+      
+    },1000)
+
+  })
+</script>

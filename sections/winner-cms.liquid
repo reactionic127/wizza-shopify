@@ -1,0 +1,64 @@
+<div class="page-width" id="winners">
+    {%- assign grid_item_width = 'small--one-half medium-up--one-quarter' -%}
+      <ul class="grid grid--uniform{% if collection.products_count > 0 %} grid--view-items{% endif %}">
+        {% for winner in section.blocks %}
+            <li class="grid__item">
+                <div class="grid grid--uniform">
+                    {% comment %} <div class="grid__item {{ grid_item_width }}"> {% endcomment %}
+                    <div class="grid-view-item">
+                        <a href="#" class="grid-view-item__link">
+                        <div class="grid-view-item__image">
+                            <img src={{ winner.settings.image | img_url: 'grande' }} />
+                        </div>
+                        <div class="h4 grid-view-item__title">{{ winner.settings.title }}</div>
+                        <div class="grid-view-item__meta">
+                            <span class="product-price__price">{{ winner.settings.text }} - {{ winner.settings.location }}</span>
+                        </div>
+                        </a>
+                    </div>
+                    {% comment %} </div> {% endcomment %}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% schema %}
+{
+    "name": "Winners",
+    "presets": [
+        {
+            "name": "Winners Section",
+            "category": "Homepage Content"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "winner-detail",
+            "name": "Winner Detail",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title"
+                },
+				{
+                    "type": "text",
+                    "id": "text",
+                    "label": "Full Name"
+                },
+                {
+                    "type": "text",
+                    "id": "location",
+                    "label": "Location"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Image"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

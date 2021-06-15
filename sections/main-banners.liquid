@@ -1,0 +1,44 @@
+{% assign img_url = section.settings.image | img_url: 'master' %}
+
+<div class="main-banner shopify-section index-section jarallax " data-jarallax data-speed="0.2" style="height: 70vh; width: 100%; margin-top: 0px; padding-top: 0px;">
+    <img class="jarallax-img" src="{{img_url}}" alt="">
+    <div class="page-width feature-row"  style="height: 70vh;">
+        <div class="feature-row">
+            <div class="feature-row__item feature-row__text feature-row__text--left">
+                <h1 class="text--white" >What are you waiting for?<br>Win a Ferrari.</h1>
+                <p class="text--white" >Go fast and support a great cause. <br />
+Donate to enter our biggest giveaway yet: a 2020 Ferrari F8 Tributo,<br />delivered to your doorstep by the Nelk Boys.</p>
+<a href="https://wizza.com/products/2020-ferrari-f8-tributo" class="button button-primary">Donate to enter</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Main banner",
+    "settings": [
+        {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+        }
+  ],
+  "presets": [
+    {
+      "name": "Main banner",
+      "category": "Banners"
+    }
+  ]
+}
+
+
+  {% endschema %}
+
+  {% stylesheet %}
+
+{% endstylesheet %}
+
+{% javascript %}
+
+{% endjavascript %}
